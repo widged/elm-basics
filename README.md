@@ -1,8 +1,9 @@
-Steps
+Steps followed
 ------
 
 ```bash
-mkdir "tutorial"
+mkdir "elm-basics"
+cd "elm-basics"
 elm package install
 elm package install elm-lang/html
 elm-lang/mouse
