@@ -3,31 +3,31 @@ import Html.App as Html
 import Html.Events exposing (onClick)
 import Style exposing (..)
 
-main = Html.beginnerProgram { model = clickCount, view = view, update = update }
+main = Html.beginnerProgram { model = 0, view = view, update = update }
 
 -- MODEL
 
-type alias ClickCount = Int
-
-clickCount : ClickCount
-clickCount = 0
+type alias CurrentCount = Int
 
 -- UPDATE
 
 type Msg = Increment | Decrement
 
-update : Msg -> ClickCount -> ClickCount
+incrementCount : Int -> CurrentCount -> CurrentCount
+incrementCount qty x = x + qty
+
+update : Msg -> CurrentCount -> CurrentCount
 update msg clickCount =
   case msg of
     Increment ->
-      clickCount + 1
+      incrementCount 1 clickCount
     Decrement ->
-      clickCount - 1
+      incrementCount -1 clickCount
 
 
 -- VIEW
 
-view : ClickCount -> Html Msg
+view : CurrentCount -> Html Msg
 view clickCount =
   div [ myStyle ]
     [ button [ onClick Decrement ] [ text "-" ]

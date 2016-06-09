@@ -4,23 +4,21 @@ import Html exposing (Html, div, text)
 import Html.App
 import Time exposing (..)
 
+main : Program Never
+main = Html.App.program { init = ({ currentTime = 0 }, Cmd.none), view = view, update = update, subscriptions = subscriptions }
+
+
 type alias Model =
-    { currentTime : Time
-    }
+  { currentTime : Time }
 
-type Msg
-    = SetCurrentTime Time
-    | NoOp
-
--- Every now takes a "tagger" function.
--- Each time a second goes by, it will wrap the time with SetCurrentTime
--- and then send this message to the update loop
-setCurrentTime : Sub Msg
-setCurrentTime = Time.every Time.second SetCurrentTime
+type Msg =
+  SetCurrentTime Time |
+  NoOp
 
 update : Msg -> Model -> (Model, Cmd Msg)
 update action model =
     case action of
+
         NoOp ->
             ( model, Cmd.none)
 
@@ -30,15 +28,10 @@ update action model =
             )
 
 view : Model -> Html Msg
-view model =
-    div
-        []
-        [ text <| toString <| model.currentTime]
+view model = div []
+              [ text <| toString <| model.currentTime]
 
--- Here, we use the model to figure out what we are currently subscribed to
--- We will use this more in the future
-handleSubs : Model -> Sub Msg
-handleSubs model = setCurrentTime
-
-main : Program Never
-main = Html.App.program { init = ({ currentTime = 0 }, Cmd.none), view = view, update = update, subscriptions = handleSubs }
+-- Each time a second goes by, it will wrap the time with SetCurrentTime
+-- and then send this message to the update loop
+subscriptions : Model -> Sub Msg
+subscriptions model = Time.every Time.second SetCurrentTime
